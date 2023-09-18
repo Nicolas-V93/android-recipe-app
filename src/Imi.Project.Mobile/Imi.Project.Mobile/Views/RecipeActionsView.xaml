@@ -1,0 +1,218 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Imi.Project.Mobile.Views.RecipeActionsView"
+             xmlns:helpers="clr-namespace:Imi.Project.Mobile.Helpers" 
+             xmlns:syncfusion="clr-namespace:Syncfusion.XForms.Expander;assembly=Syncfusion.Expander.XForms" 
+             helpers:ViewModelLocator.AutoWireViewModel="True"
+             Title="{Binding PageTitle}"
+             BackgroundColor="{StaticResource BgTabbedPage}">
+
+    <ContentPage.Content>
+        <Grid>
+            <AbsoluteLayout>
+                <FlexLayout Direction="Column" JustifyContent="SpaceAround" AlignItems="Center" BackgroundColor="Transparent" Padding="10">
+                    <Frame HeightRequest="500" WidthRequest="250" HasShadow="True" CornerRadius="10">
+                        <ScrollView>
+                            <StackLayout>
+                                <StackLayout>
+                                    <Label Text="Title" Style="{StaticResource TextSmall}" />
+                                    <Entry Text="{Binding SelectedRecipe.Title, Mode=TwoWay}" 
+                                   Style="{StaticResource TextNormal}"
+                                   Placeholder="Enter a title"
+                                   BackgroundColor="#f8fafc" 
+                                   TextColor="#171717">
+                                    </Entry>
+                                    <Label Text="{Binding ErrorMessages[Title]}" Style="{StaticResource TextError}"/>
+
+                                    <Label Text="Description" Style="{StaticResource TextSmall}" />
+                                    <ScrollView>
+                                        <Editor 
+                                    Style="{StaticResource TextNormal}"
+                                    Placeholder="Enter a description" 
+                                    BackgroundColor="#f8fafc" 
+                                    TextColor="#171717" 
+                                    HeightRequest="100" Text="{Binding SelectedRecipe.Description, Mode=TwoWay}"
+                               />
+                                    </ScrollView>
+                                    <Label Text="{Binding ErrorMessages[Description]}" Style="{StaticResource TextError}"/>
+
+                                    <Label Text="Cooking time" Style="{StaticResource TextSmall}" />
+                                    <Entry Text="{Binding SelectedRecipe.CookTime, Mode=TwoWay}" 
+                                   Style="{StaticResource TextNormal}"
+                                   Placeholder="Enter a cooking time"
+                                   BackgroundColor="#f8fafc" 
+                                   TextColor="#171717"/>
+                                    <Label Text="{Binding ErrorMessages[CookTime]}" Style="{StaticResource TextError}"/>
+
+                                    <Label Text="Preparation Time" Style="{StaticResource TextSmall}" />
+                                    <Entry Text="{Binding SelectedRecipe.PrepTime, Mode=TwoWay}" 
+                                   Style="{StaticResource TextNormal}"        
+                                   Placeholder="Enter a preparation time"
+                                   BackgroundColor="#f8fafc" 
+                                   TextColor="#171717"/>
+                                    <Label Text="{Binding ErrorMessages[PrepTime]}" Style="{StaticResource TextError}"/>
+
+                                    <Button Text="Take an image"
+                                    TextColor="#171717"
+                                    Command="{Binding TakeImageCommand}"/>
+                                    <Label Style="{StaticResource TextSmall}" Text="OR" HorizontalOptions="Center" />
+                                    <Button Text="Choose an image"
+                                    TextColor="#171717"
+                                    Command="{Binding ChooseImageCommand}"/>
+                                    <Image Source="{Binding SelectedPhoto}" />
+
+                                    <Label Text="Servings" Style="{StaticResource TextSmall}" />
+                                    <Entry Text="{Binding SelectedRecipe.Servings, Mode=TwoWay}" 
+                                   Style="{StaticResource TextNormal}"
+                                   Placeholder="Enter servings"
+                                   BackgroundColor="#f8fafc" 
+                                   TextColor="#171717"/>
+                                    <Label Text="{Binding ErrorMessages[Servings]}" Style="{StaticResource TextError}"/>
+
+                                    <Picker x:Name="pickerDiet"
+                                Style="{StaticResource TextNormal}"
+                                ItemsSource="{Binding Diets}"
+                                ItemDisplayBinding="{Binding Name}"
+                                SelectedItem="{Binding SelectedDiet, Mode=TwoWay}"
+                                Title="Select a Diet"
+                                TitleColor="#171717"/>
+                                    <Label Text="{Binding ErrorMessages[Diet]}" Style="{StaticResource TextError}"/>
+
+                                    <Picker x:Name="pickerCategories"
+                                Style="{StaticResource TextNormal}"
+                                ItemsSource="{Binding Categories}"
+                                ItemDisplayBinding="{Binding Name}"
+                                SelectedItem="{Binding SelectedCategory, Mode=TwoWay}"
+                                Title="Select a category" 
+                                TitleColor="#171717"/>
+                                    <Label Text="{Binding ErrorMessages[Category]}" Style="{StaticResource TextError}"/>
+
+
+
+                                    <syncfusion:SfExpander 
+                                     HeaderIconPosition="End"
+                                    IconColor="{StaticResource HeadingsColor}">
+                                        <syncfusion:SfExpander.Header>
+                                            <Grid>
+                                                <Label Text="Ingredients" Padding="10"/>
+                                            </Grid>
+                                        </syncfusion:SfExpander.Header>
+                                        <syncfusion:SfExpander.Content>
+                                            <helpers:ExtendedListView x:Name="extLvIngredients" 
+                                                                      ItemsSource="{Binding Ingredients}" 
+                                                                      ItemSpacing="1" 
+                                                                      AutoFitMode="DynamicHeight" >
+                                                <helpers:ExtendedListView.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <StackLayout Padding="10,0,0,0" Orientation="Horizontal">
+                                                            <Label Text="{Binding Name}" Style="{StaticResource TextNormal}"/>
+                                                            <Label Text="{Binding Amount}" Style="{StaticResource TextNormal}"/>
+                                                            <Label Text="{Binding Unit}" Style="{StaticResource TextNormal}"/>
+                                                            <Button 
+                                                                Text="X" 
+                                                                Command="{Binding Source={x:Reference extLvIngredients}, Path=BindingContext.RemoveIngredientCommand}"                                                  
+                                                                CommandParameter="{Binding .}"/>
+                                                        </StackLayout>
+                                                    </DataTemplate>
+                                                </helpers:ExtendedListView.ItemTemplate>
+                                            </helpers:ExtendedListView>
+                                        </syncfusion:SfExpander.Content>
+                                    </syncfusion:SfExpander>
+                                    <StackLayout Padding="20" IsVisible="{Binding IsIngredientFormShown}">
+                                        <Label Text="Name" />
+                                        <Entry Text="{Binding Ingredient.Name}" />
+                                        <Label Text="{Binding ErrorMessages[Name]}" Style="{StaticResource TextError}"/>
+                                        <Label Text="Amount" />
+                                        <Entry Text="{Binding Ingredient.Amount}" Keyboard="Numeric" />
+                                        <Label Text="{Binding ErrorMessages[Amount]}" Style="{StaticResource TextError}"/>
+                                        <Picker x:Name="pickerUnits"
+                                                Style="{StaticResource TextNormal}"
+                                                ItemsSource="{Binding Units}"
+                                                ItemDisplayBinding="{Binding Name}"
+                                                SelectedItem="{Binding SelectedUnit, Mode=TwoWay}"
+                                                Title="Select a unit" 
+                                                TitleColor="#171717"/>
+                                        <Label Text="{Binding ErrorMessages[Unit]}" Style="{StaticResource TextError}"/>
+
+                                        <Button Text="Add"
+                                                Command="{Binding AddIngredientCommand}" 
+                                                CommandParameter="{Binding Ingredient}"/>
+                                        <Button Text="Cancel" 
+                                                Command="{Binding HideIngredientFormCommand}"/>
+                                    </StackLayout>
+                                    <Button Text="+ Ingredient" Command="{Binding ToggleIngredientFormCommand}" />
+
+
+
+                                    <syncfusion:SfExpander 
+                                     HeaderIconPosition="End"
+                                    IconColor="{StaticResource HeadingsColor}">
+                                        <syncfusion:SfExpander.Header>
+                                            <Grid>
+                                                <Label Text="Instructions" Padding="10"/>
+                                            </Grid>
+                                        </syncfusion:SfExpander.Header>
+                                        <syncfusion:SfExpander.Content>
+                                            <helpers:ExtendedListView x:Name="extLvInstructions" 
+                                                                      ItemsSource="{Binding Instructions}" 
+                                                                      ItemSpacing="1" 
+                                                                      AutoFitMode="DynamicHeight" >
+                                                <helpers:ExtendedListView.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <StackLayout Padding="10,0,0,0" Orientation="Horizontal">
+                                                            <Label Text="{Binding StepNumber}" Style="{StaticResource TextNormal}"/>
+                                                            <Label Text="{Binding Description}" Style="{StaticResource TextNormal}"/>
+                                                            <Button 
+                                                                Text="X" 
+                                                                Command="{Binding Source={x:Reference extLvInstructions}, Path=BindingContext.RemoveInstructionCommand}"                                                  
+                                                                CommandParameter="{Binding .}"/>
+                                                        </StackLayout>
+                                                    </DataTemplate>
+                                                </helpers:ExtendedListView.ItemTemplate>
+                                            </helpers:ExtendedListView>
+                                        </syncfusion:SfExpander.Content>
+                                    </syncfusion:SfExpander>
+
+                                    <StackLayout Padding="20" IsVisible="{Binding IsInstructionFormShown}">
+                                        <Label Text="Step number"/>
+                                        <Entry Text="{Binding Instruction.StepNumber}" Keyboard="Numeric"   />
+                                        <Label Text="{Binding ErrorMessages[StepNumber]}" Style="{StaticResource TextError}"/>
+                                        <Label Text="Description" />
+                                        <Entry Text="{Binding Instruction.Description}" />
+                                        <Label Text="{Binding ErrorMessages[Description]}" Style="{StaticResource TextError}"/>
+                                        <Button Text="Add"
+                                                Command="{Binding AddInstructionCommand}" 
+                                                CommandParameter="{Binding Instruction}"/>
+                                        <Button Text="Cancel" 
+                                                Command="{Binding HideInstructionFormCommand}"/>
+                                    </StackLayout>
+                                    <Button Text="+ Instruction" Command="{Binding ToggleInstructionFormCommand}" />
+
+
+
+
+
+
+
+
+
+                                </StackLayout>
+
+                                <StackLayout Orientation="Horizontal">
+                                    <Button 
+                                Command="{Binding SaveCommand}"
+                                Text="Save" Style="{StaticResource BtnSmall}"/>
+                                    <Button 
+                                Command="{Binding CancelCommand}"
+                                Text="Cancel" Style="{StaticResource BtnSmallSecondary}" />
+                                </StackLayout>
+                            </StackLayout>
+                        </ScrollView>
+                    </Frame>
+                </FlexLayout>
+            </AbsoluteLayout>
+            <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" Scale="0.1" />
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

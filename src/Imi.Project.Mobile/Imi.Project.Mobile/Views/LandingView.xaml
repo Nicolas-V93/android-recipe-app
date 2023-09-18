@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Imi.Project.Mobile.Views.LandingView"
+             xmlns:helpers="clr-namespace:Imi.Project.Mobile.Helpers" 
+             helpers:ViewModelLocator.AutoWireViewModel="True">
+    <Grid>
+        <Image Source="https://images.pexels.com/photos/3754300/pexels-photo-3754300.jpeg" Aspect="AspectFill">
+        </Image>
+        <BoxView>
+            <BoxView.Background>
+                <LinearGradientBrush StartPoint="1,0" EndPoint="1,1">
+                    <GradientStop Color="Transparent" Offset="0"/>
+                    <GradientStop Color="#e4e3df" Offset="0.95" />
+                </LinearGradientBrush>
+            </BoxView.Background>
+        </BoxView>
+        <FlexLayout Direction="Column" JustifyContent="SpaceAround" AlignItems="Center" BackgroundColor="Transparent" Padding="10">
+            <Label
+                Style="{StaticResource MainTitle}" 
+                Text="Looking for a recipe? Want to share yours with others? We got you covered" 
+                HorizontalTextAlignment="Center"/>
+            <StackLayout WidthRequest="255">
+                <Button 
+                Style="{StaticResource BtnPrimary}"
+                Text="Get Started"
+                Command="{Binding NavigateToRegisterCommand}"
+                CharacterSpacing="0.7"/>
+                <Label 
+                Style="{StaticResource TextNormal}"  
+                HorizontalOptions="Center">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span 
+                                Text="Already have an account? " 
+                                TextColor="{StaticResource TextColor}"
+                                FontSize="13"/>
+                            <Span 
+                            Text="Sign In"
+                            TextColor="{StaticResource PrimaryColor}"
+                            FontSize="13"
+                            TextDecorations="Underline">
+                                <Span.GestureRecognizers>
+                                    <TapGestureRecognizer 
+                                        Command="{Binding NavigateToLoginCommand}" />
+                                </Span.GestureRecognizers>
+                            </Span>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <Label  
+                TextColor="{StaticResource TextColor}"
+                FontSize="12"
+                Text="© 2023 Nicolas-V93" 
+                HorizontalOptions="Center" 
+                Margin="0,20"/>
+            </StackLayout>
+        </FlexLayout>
+    </Grid>
+</ContentPage>
+    
+    
+    

@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Imi.Project.Mobile.Views.RecipeDetailsView"
+             xmlns:converters="clr-namespace:Imi.Project.Mobile.Converters"
+             xmlns:helpers="clr-namespace:Imi.Project.Mobile.Helpers"
+             helpers:ViewModelLocator.AutoWireViewModel="True"
+             xmlns:syncfusion="clr-namespace:Syncfusion.XForms.Expander;assembly=Syncfusion.Expander.XForms" 
+             xmlns:syncfusionLv="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
+             xmlns:behaviors="clr-namespace:Imi.Project.Mobile.Behaviors"
+             Title="Recipe details" BackgroundColor="{StaticResource BgTabbedPage}">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:TotalTimeConverter x:Key="TotalTimeConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <ScrollView>
+            <Grid RowSpacing="0" ColumnSpacing="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="200"></RowDefinition>
+                    <RowDefinition Height="120"></RowDefinition>
+                    <RowDefinition Height="300"></RowDefinition>
+                    <RowDefinition Height="400"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Image Grid.Row="0"  Source="{Binding SelectedRecipe.ImgURL}" Aspect="AspectFill" VerticalOptions="StartAndExpand" HeightRequest="200"/>
+
+                <StackLayout Grid.Row="1" Padding="10">
+                    <Label 
+                        Text="{Binding SelectedRecipe.Title}" 
+                        Style="{StaticResource TextLarge}"/>
+                    <FlexLayout>
+                        <Label Style="{StaticResource TextNormal}" Text="{Binding SelectedRecipe, Converter={StaticResource TotalTimeConverter}}"/>
+                        <Label Style="{StaticResource TextNormal}" Margin="10,0,0,0" Text="{Binding SelectedRecipe.Servings, StringFormat='{0} servings'}"/>
+                    </FlexLayout>
+                    <Label Text="{Binding SelectedRecipe.Description}" Style="{StaticResource TextNormal}"/>
+                </StackLayout>
+
+                <StackLayout Grid.Row="2">
+                    <Label Text="Ingredients" Style="{StaticResource TagLabel}" Padding="10,0,0,0" Margin="0,30,0,5"/>
+                    <StackLayout BindableLayout.ItemsSource="{Binding Ingredients}">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <StackLayout Padding="10,0,0,0" Orientation="Horizontal">
+                                        <Label Text="{Binding Name}" Style="{StaticResource TextNormal}"/>
+                                        <Label Text="{Binding Amount}" Style="{StaticResource TextNormal}"/>
+                                        <Label Text="{Binding Unit}" Style="{StaticResource TextNormal}"/>
+                                    </StackLayout>
+                                </Grid>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </StackLayout>
+                </StackLayout>
+
+                <StackLayout Grid.Row="3" >
+                    <Label Text="Instructions" Style="{StaticResource TagLabel}" Padding="10,0,0,0" Margin="0,30,0,5"/>
+                    <StackLayout BindableLayout.ItemsSource="{Binding Instructions}">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <StackLayout Padding="10,0,30,0" Orientation="Horizontal">
+                                        <Label Text="{Binding StepNumber}" Style="{StaticResource TextNormal}"/>
+                                        <Label Text="{Binding Description}" Style="{StaticResource TextNormal}"/>
+                                    </StackLayout>
+                                </Grid>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </StackLayout>
+                </StackLayout>
+
+
+                <syncfusion:SfExpander 
+                        Grid.Row="4"
+                        HeaderIconPosition="End"
+                        IconColor="{StaticResource HeadingsColor}">
+                    <syncfusion:SfExpander.Header>
+                        <Grid BackgroundColor="{StaticResource BgTabbedPage}">
+                            <Label Style="{StaticResource TagLabel}" Text="Reviews" Padding="10"/>
+                        </Grid>
+                    </syncfusion:SfExpander.Header>
+                    <syncfusion:SfExpander.Content>
+                        <helpers:ExtendedListView x:Name="listView" ItemsSource="{Binding Reviews}" ItemSpacing="1" AutoFitMode="DynamicHeight" BackgroundColor="{StaticResource BgTabbedPage}">
+                            <helpers:ExtendedListView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Padding="10" HeightRequest="150" BackgroundColor="Transparent">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="35"/>
+                                            <RowDefinition Height="50"/>
+                                        </Grid.RowDefinitions>
+                                        <StackLayout HorizontalOptions="StartAndExpand" Grid.Row="0">
+                                            <Label Style="{StaticResource TextNormal}"
+                                                   Text="{Binding User.UserName, StringFormat='By {0}'}" />
+                                        </StackLayout>
+                                        <StackLayout Grid.Row="1">
+                                            <Label 
+                                                   Style="{StaticResource TextNormal}"
+                                                   Text="{Binding Rating, StringFormat='Rating: {0}/5'}"/>
+                                            <Label
+                                                   Style="{StaticResource TextNormal}"                                                     
+                                                   Text="{Binding Comment}"/>
+                                            <Label Style="{StaticResource TextSmall}"
+                                                   Text="{Binding CreationDate, StringFormat='{0:M/d/yyyy}'}"/>
+                                        </StackLayout>
+                                    </Grid>
+                                </DataTemplate>
+                            </helpers:ExtendedListView.ItemTemplate>
+                        </helpers:ExtendedListView>
+                    </syncfusion:SfExpander.Content>
+                </syncfusion:SfExpander>
+            </Grid>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

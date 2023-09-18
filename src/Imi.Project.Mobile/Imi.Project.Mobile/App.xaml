@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Application xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Imi.Project.Mobile.App">
+    <Application.Resources>
+        <ResourceDictionary>
+            <!--COLORS-->
+            <Color x:Key="TextColor">#171717</Color>
+            <Color x:Key="BgPrimaryColor">#3f6212</Color>
+            <Color x:Key="BgTabbedPage">#fff7ed</Color>
+            <Color x:Key="PrimaryColor">#c2410c</Color>
+
+            <Color x:Key="HeadingsColor">#4f7ca6</Color>
+
+            <!--LABEL STYLES-->
+            <!--Main Title-->
+            <Style x:Key="MainTitle" TargetType="Label">
+                <Setter Property="FontSize" Value="31" />
+                <Setter Property="FontAttributes" Value="Bold"/>
+                <Setter Property="TextColor" Value="{StaticResource TextColor}" />
+                <Setter Property="FontFamily" Value="IndieFlower" />
+            </Style>
+            <!--Page Header-->
+            <Style x:Key="PageHeader" TargetType="Label">
+                <Setter Property="FontSize" Value="21" />
+                <Setter Property="FontAttributes" Value="Bold"/>
+                <Setter Property="TextTransform" Value="Uppercase"/>
+                <Setter Property="CharacterSpacing" Value="0.5"/>
+                <Setter Property="TextColor" Value="{StaticResource HeadingsColor}" />
+            </Style>
+            <!--Large Text-->
+            <Style x:Key="TextLarge" TargetType="Label">
+                <Setter Property="FontSize" Value="18" />
+                <Setter Property="TextColor" Value="{StaticResource TextColor}" />
+            </Style>
+            <!--Normal Text-->
+            <Style x:Key="TextNormal" TargetType="Label">
+                <Setter Property="FontSize" Value="15" />
+                <Setter Property="TextColor" Value="{StaticResource TextColor}" />
+            </Style>
+            <!-- Small Text -->
+            <Style x:Key="TextSmall" TargetType="Label">
+                <Setter Property="FontSize" Value="13" />
+                <Setter Property="TextColor" Value="{StaticResource TextColor}" />
+            </Style>
+
+            <Style x:Key="TextError" TargetType="Label">
+                <Setter Property="FontSize" Value="12" />
+                <Setter Property="TextColor" Value="#FF0000" />
+            </Style>
+
+            <!--Tags-->
+            <Style x:Key="TagLabel" TargetType="Label">
+                <Setter Property="FontSize" Value="11" />
+                <Setter Property="CharacterSpacing" Value="3" ></Setter>
+                <Setter Property="TextColor" Value="{StaticResource HeadingsColor}" />
+                <Setter Property="TextTransform" Value="Uppercase" />
+                <Setter Property="FontAttributes" Value="Bold" />
+            </Style>
+
+            <!--BUTTON STYLES-->
+            <Style x:Key="BtnPrimary" TargetType="Button">
+                <Setter Property="FontSize" Value="15" />
+                <Setter Property="BackgroundColor" Value="{StaticResource BgPrimaryColor}" />
+                <Setter Property="TextColor" Value="#fff" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="TextTransform" Value="Uppercase" />
+                <Setter Property="CornerRadius" Value="5" />
+                <Setter Property="Padding" Value="12" />
+            </Style>
+
+            <Style x:Key="BtnSmall" TargetType="Button">
+                <Setter Property="FontSize" Value="13" />
+                <Setter Property="BackgroundColor" Value="{StaticResource BgPrimaryColor}" />
+                <Setter Property="TextColor" Value="#fff" />
+                <Setter Property="CornerRadius" Value="5" />
+                <Setter Property="Padding" Value="8" />
+            </Style>
+
+            <Style x:Key="BtnSmallSecondary" TargetType="Button">
+                <Setter Property="FontSize" Value="13" />
+                <Setter Property="BackgroundColor" Value="#9ca3af" />
+                <Setter Property="TextColor" Value="#fff" />
+                <Setter Property="CornerRadius" Value="5" />
+                <Setter Property="Padding" Value="8" />
+            </Style>
+
+            <Style x:Key="CheckBoxStyles" TargetType="CheckBox">
+                <Setter Property="HorizontalOptions" Value="Center"/>
+                <Setter Property="VerticalOptions" Value="Center"/>
+                <Setter Property="Color" Value="{StaticResource PrimaryColor}"/>
+                <Style.Triggers>
+                    <Trigger TargetType="CheckBox" Property="IsEnabled" Value="False">
+                        <Setter Property="Color" Value="{StaticResource PrimaryColor}"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style x:Key="EntryStyle" TargetType="{x:Type Entry}">
+                <Setter Property="HorizontalTextAlignment" Value="Start"></Setter>
+                <Setter Property="FontSize" Value="12"></Setter>
+                <Setter Property="HeightRequest" Value="35"></Setter>
+                <Setter Property="PlaceholderColor" Value="#5d5d5d"></Setter>
+                <Setter Property="TextColor" Value="{StaticResource TextColor}"></Setter>
+                <Setter Property="BackgroundColor" Value="#fff"></Setter>
+            </Style>
+
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
+

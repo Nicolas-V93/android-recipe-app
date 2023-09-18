@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Imi.Project.Mobile.Views.RegisterView"
+             xmlns:helpers="clr-namespace:Imi.Project.Mobile.Helpers" 
+             helpers:ViewModelLocator.AutoWireViewModel="True"
+             Title="Register">
+    <ContentPage.Content>
+        <Grid>
+            <BoxView>
+                <BoxView.Background>
+                    <LinearGradientBrush StartPoint="1,0" EndPoint="1,1">
+                        <GradientStop Color="#f5f1f2" Offset="0"/>
+                        <GradientStop Color="#efeffa" Offset="0.33"/>
+                        <GradientStop Color="#e9ecf2" Offset="0.95" />
+                    </LinearGradientBrush>
+                </BoxView.Background>
+            </BoxView>
+
+            <ScrollView>
+                <AbsoluteLayout>
+                    <FlexLayout Direction="Column" JustifyContent="SpaceAround" AlignItems="Center" BackgroundColor="Transparent" Padding="10" Margin="0,20,0,0">
+                        <Frame WidthRequest="300" HasShadow="True" CornerRadius="10">
+                            <StackLayout>
+                                <Label Text="Register" Style="{StaticResource TextLarge}" Margin="0,0,0,15"/>
+                                <StackLayout>
+                                    <Label Text="Username" Style="{StaticResource TextSmall}" />
+                                    <Entry 
+                               Text="{Binding Username, Mode=TwoWay}"
+                               Placeholder="Enter your username" 
+                               Style="{StaticResource EntryStyle}"  />
+                                    <Label Text="{Binding ErrorMessages[Username]}" Style="{StaticResource TextError}" />
+
+                                    <Label Text="Email" Style="{StaticResource TextSmall}" />
+                                    <Entry 
+                               Text="{Binding Email, Mode=TwoWay}"
+                               Placeholder="Enter your emailaddress" 
+                               Style="{StaticResource EntryStyle}"  />
+                                    <Label Text="{Binding ErrorMessages[Email]}" Style="{StaticResource TextError}" />
+
+                                    <Label Text="Password" Style="{StaticResource TextSmall}" />
+                                    <Entry 
+                               Text="{Binding Password, Mode=TwoWay}"
+                               Placeholder="Enter your password" 
+                               IsPassword="True" 
+                               Style="{StaticResource EntryStyle}" />
+                                    <Label Text="{Binding ErrorMessages[Password]}" Style="{StaticResource TextError}" />
+
+                                    <Label Text="Confirm password" Style="{StaticResource TextSmall}" />
+                                    <Entry 
+                               Text="{Binding ConfirmPassword, Mode=TwoWay}"
+                               Placeholder="Confirm your password" 
+                               IsPassword="True"
+                               Style="{StaticResource EntryStyle}" />
+                                    <Label Text="{Binding ErrorMessages[ConfirmPassword]}"  Style="{StaticResource TextError}" />
+
+                                    <Label Text="Date of birth" Style="{StaticResource TextSmall}" />
+                                    <DatePicker
+                               Date="{Binding DateOfBirth, Mode=TwoWay}"
+                               Style="{StaticResource EntryStyle}" />
+                                    <Label Text="{Binding ErrorMessages[DateOfBirth]}" Style="{StaticResource TextError}" />
+
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label Text="I agree to the terms and conditions"
+                                           VerticalTextAlignment="Center" 
+                                           Style="{StaticResource TextSmall}"/>
+                                        <CheckBox 
+                                IsChecked="{Binding TermsAccepted, Mode=TwoWay}" 
+                                Style="{StaticResource CheckBoxStyles}"/>
+                                    </StackLayout>
+                                    <Label Text="{Binding ErrorMessages[TermsAccepted]}"  Style="{StaticResource TextError}" />
+                                </StackLayout>
+                                <Button 
+                            Command="{Binding RegisterCommand}"
+                            Text="Register" 
+                            Style="{StaticResource BtnSmall}"/>
+                                <Label HorizontalTextAlignment="Center" Margin="0,15,0,0">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span 
+                                Text="Already a member? "
+                                TextColor="{StaticResource TextColor}"
+                                FontSize="11"/>
+                                            <Span 
+                            Text="Click here"
+                            TextColor="{StaticResource PrimaryColor}"
+                            FontSize="11"
+                            TextDecorations="Underline">
+                                                <Span.GestureRecognizers>
+                                                    <TapGestureRecognizer 
+                                        Command="{Binding NavigateToLoginCommand}" />
+                                                </Span.GestureRecognizers>
+                                            </Span>
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                            </StackLayout>
+                        </Frame>
+                    </FlexLayout>
+                    <Image Source="app_icon.png"
+                       AbsoluteLayout.LayoutFlags="PositionProportional"
+                       AbsoluteLayout.LayoutBounds="0.5,0.01,50,50" VerticalOptions="Fill" HorizontalOptions="Fill"></Image>
+                </AbsoluteLayout>
+            </ScrollView>
+            <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" Scale="0.1" />
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>
+    
+    

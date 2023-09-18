@@ -1,0 +1,269 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Imi.Project.Mobile.Views.RecipesView"
+             xmlns:tabView="clr-namespace:Syncfusion.XForms.TabView;assembly=Syncfusion.SfTabView.XForms" 
+             xmlns:syncfusion="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
+             xmlns:helpers="clr-namespace:Imi.Project.Mobile.Helpers"
+             xmlns:behaviors="clr-namespace:Imi.Project.Mobile.Behaviors" 
+             xmlns:local="clr-namespace:Imi.Project.Mobile.Converters"
+             helpers:ViewModelLocator.AutoWireViewModel="True"            
+             BackgroundColor="{StaticResource BgTabbedPage}"
+             Title="{Binding TabTitle}">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:BookmarkToImageConverter x:Key="BookmarkConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <tabView:SfTabView    
+            x:Name="sfTabViewMain"
+            VisibleHeaderCount="4"
+            TabHeaderPosition="Bottom"
+            DisplayMode="ImageWithText"
+            SelectedIndex="{Binding SelectedTabIndex}">
+            <tabView:SfTabView.SelectionIndicatorSettings>
+                <tabView:SelectionIndicatorSettings
+                    Color="{StaticResource BgTabbedPage}"              
+                    Position="Bottom"
+                    StrokeThickness="5"/>
+            </tabView:SfTabView.SelectionIndicatorSettings>
+            <tabView:SfTabView.Behaviors>
+                <behaviors:EventToCommandBehavior Command="{Binding SelectionChangedCommand}" EventName="SelectionChanged"/>
+            </tabView:SfTabView.Behaviors>
+
+            <tabView:SfTabItem Title="Home" SelectionColor="{StaticResource HeadingsColor}">
+                <tabView:SfTabItem.ImageSource>
+                    <OnPlatform x:TypeArguments="ImageSource">
+                        <On Platform="iOS,Android">home.png</On>
+                        <On Platform="UWP">Assets/TabIcons/home.png</On>
+                    </OnPlatform>
+                </tabView:SfTabItem.ImageSource>
+                <tabView:SfTabItem.Content>
+                    <StackLayout>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="100" />
+                            </Grid.RowDefinitions>
+                            <Image Aspect="AspectFill">
+                                <Image.Source>
+                                    <OnPlatform x:TypeArguments="ImageSource">
+                                        <On Platform="Android, iOS" Value="indeximage.jpg" />
+                                        <On Platform="UWP" Value="Assets/indeximage.jpg" />
+                                    </OnPlatform>
+                                </Image.Source>
+                            </Image>
+                            <Label Text="{Binding CurrentUsername, StringFormat='Hi, {0}'}" FontSize="Large" TextColor="{StaticResource HeadingsColor}" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center"/>
+                        </Grid>
+                        <syncfusion:SfListView 
+                        x:Name="SfListViewRecipes"
+                        BackgroundColor="{StaticResource BgTabbedPage}"
+                        ItemSize="100"   
+                        ItemSpacing="10"
+                        ItemsSource="{Binding Recipes}" 
+                        ItemsSourceChangeCachingStrategy="RecycleItems">
+                            <syncfusion:SfListView.Behaviors>
+                                <behaviors:EventToCommandBehavior EventName="ItemTapped" Command="{Binding RecipeTappedCommand}"/>
+                            </syncfusion:SfListView.Behaviors>
+                            <syncfusion:SfListView.ItemTemplate>
+                                <DataTemplate>
+                                    <FlexLayout>
+                                        <Image Source="{Binding ImgURL}" Aspect="AspectFill" FlexLayout.Grow="1" WidthRequest="200" HeightRequest="95"/>
+                                        <StackLayout Margin="10,0,0,0" FlexLayout.Grow="2">
+                                            <FlexLayout VerticalOptions="Center" JustifyContent="SpaceBetween">
+                                                <StackLayout Orientation="Horizontal">
+                                                    <Label Text="{Binding Category}" Style="{StaticResource TagLabel}" />
+                                                    <Label Text="&#38;" Style="{StaticResource TagLabel}"/>
+                                                    <Label Text="{Binding Diet}" Style="{StaticResource TagLabel}"/>
+                                                </StackLayout>
+                                                <Image Aspect="AspectFill" WidthRequest="25" HeightRequest="25">
+                                                    <Image.Source>
+                                                        <Binding Path="IsBookmarked" Converter="{StaticResource BookmarkConverter}" />
+                                                    </Image.Source>
+                                                    <Image.GestureRecognizers>
+                                                        <TapGestureRecognizer 
+                                                            Command="{Binding BindingContext.ToggleBookmarkCommand, 
+                                                            Source={x:Reference SfListViewRecipes}}" 
+                                                            CommandParameter="{Binding .}" />
+                                                    </Image.GestureRecognizers>
+                                                </Image>
+                                            </FlexLayout>
+                                            <Label Text="{Binding Title}" Style="{StaticResource TextLarge}" />
+                                        </StackLayout>
+                                    </FlexLayout>
+                                </DataTemplate>
+                            </syncfusion:SfListView.ItemTemplate>
+                        </syncfusion:SfListView>
+                    </StackLayout>
+                </tabView:SfTabItem.Content>
+            </tabView:SfTabItem>
+            <tabView:SfTabItem Title="My Meals" SelectionColor="{StaticResource HeadingsColor}">
+                <tabView:SfTabItem.ImageSource>
+                    <OnPlatform x:TypeArguments="ImageSource">
+                        <On Platform="iOS,Android">spoon_and_fork.png</On>
+                        <On Platform="UWP">Assets/TabIcons/spoon_and_fork.png</On>
+                    </OnPlatform>
+                </tabView:SfTabItem.ImageSource>
+                <tabView:SfTabItem.Content>
+                    <StackLayout>
+                        <syncfusion:SfListView 
+                        x:Name="SfListViewUserRecipes"
+                        BackgroundColor="{StaticResource BgTabbedPage}"
+                        ItemSize="100"
+                        ItemSpacing="10"
+                        AllowSwiping="True"
+                        ItemsSource="{Binding UserRecipes}">
+                            <syncfusion:SfListView.Behaviors>
+                                <behaviors:EventToCommandBehavior EventName="ItemTapped" Command="{Binding RecipeTappedCommand}"/>
+                            </syncfusion:SfListView.Behaviors>
+                            <syncfusion:SfListView.RightSwipeTemplate>
+                                <DataTemplate x:Name="LeftSwipeTemplate">
+                                    <Grid BackgroundColor="#DC595F" HorizontalOptions="Fill" VerticalOptions="Fill">
+                                        <Grid VerticalOptions="Center" HorizontalOptions="Center">
+                                            <Image                                            
+                                        Grid.Column="0"
+                                        Grid.Row="0"
+                                        HeightRequest="25"
+                                        WidthRequest="25"
+                                        BackgroundColor="Transparent"
+                                        >
+                                                <Image.Source>
+                                                    <OnPlatform x:TypeArguments="ImageSource">
+                                                        <On Platform="iOS,Android">delete.png</On>
+                                                        <On Platform="UWP">Assets/delete.png</On>
+                                                    </OnPlatform>
+                                                </Image.Source>
+                                            </Image>
+                                        </Grid>
+                                        <Grid.GestureRecognizers>
+                                            <TapGestureRecognizer 
+                                                Command="{Binding Path=BindingContext.DeleteRecipeCommand, 
+                                                Source={x:Reference SfListViewUserRecipes}}"
+                                                CommandParameter="{Binding .}"/>
+                                        </Grid.GestureRecognizers>
+                                    </Grid>
+                                </DataTemplate>
+                            </syncfusion:SfListView.RightSwipeTemplate>
+                            <syncfusion:SfListView.LeftSwipeTemplate>
+                                <DataTemplate x:Name="RightSwipeTemplate">
+                                    <Grid BackgroundColor="{StaticResource BgPrimaryColor}" HorizontalOptions="Fill" VerticalOptions="Fill">
+                                        <Grid VerticalOptions="Center" HorizontalOptions="Center">
+                                            <Label Grid.Row="0"                                                   
+                                                    BackgroundColor="Transparent" 
+                                                    Text="Edit"
+                                                    TextColor="#fff"
+                                                    HeightRequest="100" 
+                                                    WidthRequest="100"
+                                                    VerticalTextAlignment="Center"
+                                                    HorizontalTextAlignment="Center">
+                                            </Label>
+                                            <Grid.GestureRecognizers>
+                                                <TapGestureRecognizer 
+                                                Command="{Binding Path=BindingContext.EditRecipeCommand, 
+                                                Source={x:Reference SfListViewUserRecipes}}"
+                                                CommandParameter="{Binding .}"/>
+                                            </Grid.GestureRecognizers>
+                                        </Grid>
+                                    </Grid>
+                                </DataTemplate>
+                            </syncfusion:SfListView.LeftSwipeTemplate>
+                            <syncfusion:SfListView.ItemTemplate>
+                                <DataTemplate>
+                                    <FlexLayout>
+                                        <Image Source="{Binding ImgURL}" Aspect="AspectFill" FlexLayout.Grow="1" WidthRequest="135" HeightRequest="95"/>
+                                        <StackLayout Margin="10,0,0,0" FlexLayout.Grow="2">
+                                            <StackLayout Orientation="Horizontal">
+                                                <Label Text="{Binding Category}" Style="{StaticResource TagLabel}" />
+                                                <Label Text="&#38;" Style="{StaticResource TagLabel}"/>
+                                                <Label Text="{Binding Diet}" Style="{StaticResource TagLabel}"/>
+                                            </StackLayout>
+                                            <Label Text="{Binding Title}" Style="{StaticResource TextLarge}" />
+                                        </StackLayout>
+                                    </FlexLayout>
+                                </DataTemplate>
+                            </syncfusion:SfListView.ItemTemplate>
+                        </syncfusion:SfListView>
+                        <Button Command="{Binding AddRecipeCommand}"
+                                Text="+ Add Recipe" Style="{StaticResource BtnPrimary}"
+                                HorizontalOptions="Center"
+                                Margin="10"/>
+                    </StackLayout>
+                </tabView:SfTabItem.Content>
+            </tabView:SfTabItem>
+            <tabView:SfTabItem Title="Favorites" SelectionColor="{StaticResource HeadingsColor}">
+                <tabView:SfTabItem.ImageSource>
+                    <OnPlatform x:TypeArguments="ImageSource">
+                        <On Platform="iOS,Android">heart.png</On>
+                        <On Platform="UWP">Assets/TabIcons/heart.png</On>
+                    </OnPlatform>
+                </tabView:SfTabItem.ImageSource>
+                <tabView:SfTabItem.Content>
+                    <syncfusion:SfListView 
+                        BackgroundColor="{StaticResource BgTabbedPage}"
+                        ItemSize="100"   
+                        ItemSpacing="10"
+                        ItemsSource="{Binding Favorites}" 
+                        ItemsSourceChangeCachingStrategy="RecycleItems">
+                        <syncfusion:SfListView.Behaviors>
+                            <behaviors:EventToCommandBehavior EventName="ItemTapped" Command="{Binding RecipeTappedCommand}"/>
+                        </syncfusion:SfListView.Behaviors>
+                        <syncfusion:SfListView.ItemTemplate>
+                            <DataTemplate>
+                                <FlexLayout>
+                                    <Image Source="{Binding ImgURL}" Aspect="AspectFill" FlexLayout.Grow="1" WidthRequest="135" HeightRequest="95"/>
+                                    <StackLayout Margin="10,0,0,0" FlexLayout.Grow="2">
+                                        <StackLayout Orientation="Horizontal">
+                                            <Label Text="{Binding Category}" Style="{StaticResource TagLabel}" />
+                                            <Label Text="&#38;" Style="{StaticResource TagLabel}"/>
+                                            <Label Text="{Binding Diet}" Style="{StaticResource TagLabel}"/>
+                                        </StackLayout>
+                                        <Label Text="{Binding Title}" Style="{StaticResource TextLarge}" />
+                                    </StackLayout>
+                                </FlexLayout>
+                            </DataTemplate>
+                        </syncfusion:SfListView.ItemTemplate>
+                    </syncfusion:SfListView>
+                </tabView:SfTabItem.Content>
+            </tabView:SfTabItem>
+            <tabView:SfTabItem Title="Account" SelectionColor="{StaticResource HeadingsColor}">
+                <tabView:SfTabItem.ImageSource>
+                    <OnPlatform x:TypeArguments="ImageSource">
+                        <On Platform="iOS,Android">user.png</On>
+                        <On Platform="UWP">Assets/TabIcons/user.png</On>
+                    </OnPlatform>
+                </tabView:SfTabItem.ImageSource>
+                <tabView:SfTabItem.Content>
+                    <StackLayout>
+                        <StackLayout Margin="20,0,0,0">
+                            <Label Text="Name" Style="{StaticResource TextNormal}"/>
+                            <Label 
+                                Text="{Binding CurrentUsername}" 
+                                Style="{StaticResource TextNormal}"
+                                FontAttributes="Bold"/>
+                        </StackLayout>
+                        <StackLayout Margin="20,0,0,0">
+                            <Label Text="Email" Style="{StaticResource TextNormal}"/>
+                            <Label 
+                                Text="{Binding CurrentUserEmail}" 
+                                Style="{StaticResource TextNormal}"
+                                FontAttributes="Bold"/>
+                        </StackLayout>
+                        <Button 
+                            Command="{Binding LogoutCommand}"
+                            Text="Logout" 
+                            Style="{StaticResource BtnSmall}" 
+                            HorizontalOptions="Center"/>
+                    </StackLayout>
+                </tabView:SfTabItem.Content>
+            </tabView:SfTabItem>
+
+
+        </tabView:SfTabView>
+    </ContentPage.Content>
+
+
+</ContentPage>
+
