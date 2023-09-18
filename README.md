@@ -37,6 +37,8 @@
 Users can register and login, add/edit/delete recipes, leave reviews.
 UI uses components from syncfusion (tabviews, listviews, swiping)
 <br />
+Images are uploaded to Cloudinary.
+<br />
 <br />
 
 <img src="images/start.PNG" alt="main" width="300" height="auto">
@@ -60,7 +62,10 @@ Details Page
 
 Recipes Page
 
+<div>
 <img src="images/recipes.PNG" alt="main" width="300" height="auto">
+<img src="images/delete.PNG" alt="main" width="300" height="auto">
+</div>
 
 Adding Recipe
 
